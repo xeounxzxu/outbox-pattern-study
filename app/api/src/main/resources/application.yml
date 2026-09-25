@@ -1,8 +1,12 @@
 spring:
   application:
     name: outbox-api
+  config:
+    import: classpath:outbox.yml
 server:
   port: ${API_PORT:8080}
+orders:
+  topic: ${ORDERS_TOPIC:orders.created}
 management:
   endpoints:
     web:

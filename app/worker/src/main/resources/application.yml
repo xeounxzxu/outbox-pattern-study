@@ -1,12 +1,10 @@
 spring:
   application:
     name: outbox-worker
+  config:
+    import: classpath:outbox.yml
 server:
   port: ${WORKER_PORT:8081}
-worker:
-  scheduling:
-    enabled: ${WORKER_SCHEDULING_ENABLED:true}
-  poll-interval-ms: ${WORKER_POLL_INTERVAL_MS:5000}
 management:
   endpoints:
     web:
