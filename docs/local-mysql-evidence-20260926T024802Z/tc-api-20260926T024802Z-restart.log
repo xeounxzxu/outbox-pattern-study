@@ -1,0 +1,164 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-26T02:48:34.759Z  INFO 44622 --- [outbox-api] [           main] c.example.outbox.api.ApiApplicationKt    : Starting ApiApplicationKt v0.0.1-SNAPSHOT using Java 25 with PID 44622 (/Users/jeoung-gyu/Workspace/outbox-pattern/app/api/build/libs/api-0.0.1-SNAPSHOT.jar started by jeoung-gyu in /Users/jeoung-gyu/Workspace/outbox-pattern)
+2026-09-26T02:48:34.762Z  INFO 44622 --- [outbox-api] [           main] c.example.outbox.api.ApiApplicationKt    : No active profile set, falling back to 1 default profile: "default"
+2026-09-26T02:48:35.830Z  INFO 44622 --- [outbox-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-09-26T02:48:35.841Z  INFO 44622 --- [outbox-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-26T02:48:35.841Z  INFO 44622 --- [outbox-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-09-26T02:48:35.863Z  INFO 44622 --- [outbox-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1060 ms
+2026-09-26T02:48:36.123Z  INFO 44622 --- [outbox-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-26T02:48:36.385Z  INFO 44622 --- [outbox-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3a80c534
+2026-09-26T02:48:36.387Z  INFO 44622 --- [outbox-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-26T02:48:36.407Z  INFO 44622 --- [outbox-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/outbox?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true (MySQL 8.4)
+2026-09-26T02:48:36.477Z  INFO 44622 --- [outbox-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.018s)
+2026-09-26T02:48:36.492Z  INFO 44622 --- [outbox-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `outbox`: 2
+2026-09-26T02:48:36.495Z  INFO 44622 --- [outbox-api] [           main] o.f.core.internal.command.DbMigrate      : Schema `outbox` is up to date. No migration necessary.
+2026-09-26T02:48:36.619Z  INFO 44622 --- [outbox-api] [           main] o.t.t.service.OutboxProcessor            : Starting outbox processor with lockOwnerId tc-api-20260926T024802Z-restart, source outbox-pattern and processing interval 200 ms and producer factory DefaultKafkaProducerFactory{producerProps={enable.idempotence=true, value.serializer=class org.apache.kafka.common.serialization.ByteArraySerializer, request.timeout.ms=3000, max.block.ms=3000, acks=all, bootstrap.servers=localhost:9092, delivery.timeout.ms=10000, key.serializer=class org.apache.kafka.common.serialization.StringSerializer}}
+2026-09-26T02:48:36.638Z  INFO 44622 --- [outbox-api] [           main] o.a.kafka.common.config.AbstractConfig   : ProducerConfig values: 
+	acks = -1
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	config.providers = []
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 10000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 5
+	max.block.ms = 3000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 3000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = []
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = []
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transaction.two.phase.commit.enable = false
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-09-26T02:48:36.657Z  INFO 44622 --- [outbox-api] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-09-26T02:48:36.714Z  INFO 44622 --- [outbox-api] [           main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Instantiated an idempotent producer.
+2026-09-26T02:48:36.745Z  INFO 44622 --- [outbox-api] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.2.1
+2026-09-26T02:48:36.745Z  INFO 44622 --- [outbox-api] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 92f61c44867f39dc
+2026-09-26T02:48:36.745Z  INFO 44622 --- [outbox-api] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1790390916744
+2026-09-26T02:48:36.993Z  INFO 44622 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: 5L6g3nShT-eMCtK--X86sw
+2026-09-26T02:48:36.993Z  INFO 44622 --- [outbox-api] [ad | producer-1] o.a.k.c.p.internals.TransactionManager   : [Producer clientId=producer-1] ProducerId set to 1001 with epoch 0
+2026-09-26T02:48:37.033Z  INFO 44622 --- [outbox-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-09-26T02:48:37.080Z  INFO 44622 --- [outbox-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-09-26T02:48:37.086Z  INFO 44622 --- [outbox-api] [           main] c.example.outbox.api.ApiApplicationKt    : Started ApiApplicationKt in 2.64 seconds (process running for 2.986)
+2026-09-26T02:48:37.138Z  INFO 44622 --- [outbox-api] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26T02:48:37.139Z  INFO 44622 --- [outbox-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-26T02:48:37.140Z  INFO 44622 --- [outbox-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-09-26T02:48:45.280Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-09-26T02:48:46.796Z  INFO 44622 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : tc-api-20260926T024802Z-restart acquired outbox lock, starting to process outbox
+2026-09-26T02:48:47.295Z  INFO 44622 --- [outbox-api] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-09-26T02:48:47.299Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.t.t.service.OutboxProcessor            : Stopping OutboxProcessor with lockOwnerId tc-api-20260926T024802Z-restart.
+2026-09-26T02:48:47.300Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 9223372036854775807 ms.
+2026-09-26T02:48:47.305Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-09-26T02:48:47.305Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-09-26T02:48:47.305Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-09-26T02:48:47.305Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-09-26T02:48:47.307Z  INFO 44622 --- [outbox-api] [ionShutdownHook] o.a.kafka.common.utils.AppInfoParser     : App info kafka.producer for producer-1 unregistered
+2026-09-26T02:48:47.316Z  INFO 44622 --- [outbox-api] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-09-26T02:48:47.320Z  INFO 44622 --- [outbox-api] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

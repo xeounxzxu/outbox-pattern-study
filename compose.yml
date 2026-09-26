@@ -1,19 +1,22 @@
 services:
-  postgres:
-    image: postgres:17-alpine
+  mysql:
+    image: mysql:8.4
     environment:
-      POSTGRES_DB: outbox
-      POSTGRES_USER: outbox
-      POSTGRES_PASSWORD: outbox
+      MYSQL_DATABASE: outbox
+      MYSQL_USER: outbox
+      MYSQL_PASSWORD: outbox
+      MYSQL_ROOT_PASSWORD: local-root
+      TZ: UTC
+    command: ["--default-time-zone=+00:00"]
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:3306:3306"
     volumes:
-      - outbox-postgres:/var/lib/postgresql/data
+      - outbox-mysql:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U outbox -d outbox"]
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -h 127.0.0.1 -u$$MYSQL_USER -D $$MYSQL_DATABASE -e 'SELECT 1'"]
       interval: 5s
       timeout: 3s
-      retries: 20
+      retries: 30
   kafka:
     image: apache/kafka:4.1.1
     ports:
@@ -44,4 +47,4 @@ services:
     entrypoint: ["/opt/kafka/bin/kafka-topics.sh"]
     command: ["--bootstrap-server", "kafka:19092", "--create", "--if-not-exists", "--topic", "orders.created", "--partitions", "1", "--replication-factor", "1"]
 volumes:
-  outbox-postgres:
+  outbox-mysql:

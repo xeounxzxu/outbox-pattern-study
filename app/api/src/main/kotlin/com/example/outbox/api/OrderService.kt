@@ -20,7 +20,7 @@ class OrderService(
         val event = OrderCreated(UUID.randomUUID(), productName, quantity)
         jdbcTemplate.update(
             "insert into orders (id, product_name, quantity) values (?, ?, ?)",
-            event.orderId, event.productName, event.quantity,
+            event.orderId.toString(), event.productName, event.quantity,
         )
         outboxService.saveForPublishing(
             topic, event.orderId.toString(), objectMapper.writeValueAsBytes(event),

@@ -16,7 +16,12 @@ configure(listOf(project(":app:api"), project(":app:worker"), project(":infra:ou
 
     group = "com.example.outbox"
     version = "0.0.1-SNAPSHOT"
-    repositories { mavenCentral() }
+    repositories {
+        mavenLocal {
+            content { includeGroup("one.tomorrow.transactional-outbox") }
+        }
+        mavenCentral()
+    }
 
     extensions.configure<DependencyManagementExtension> {
         imports { mavenBom(SpringBootPlugin.BOM_COORDINATES) }
@@ -33,7 +38,11 @@ configure(listOf(project(":app:api"), project(":app:worker"), project(":infra:ou
         "testImplementation"("org.jetbrains.kotlin:kotlin-test-junit5")
         "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
     }
-    tasks.withType<Test>().configureEach { useJUnitPlatform() }
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+        systemProperty("user.timezone", "UTC")
+    }
+    tasks.withType<JavaExec>().configureEach { systemProperty("user.timezone", "UTC") }
 }
 
 configure(listOf(project(":app:api"), project(":app:worker"))) {
@@ -41,6 +50,6 @@ configure(listOf(project(":app:api"), project(":app:worker"))) {
     dependencies {
         "implementation"(project(":infra:outbox"))
         "implementation"("org.springframework.boot:spring-boot-starter-actuator")
-        "testImplementation"("org.testcontainers:testcontainers-postgresql")
+        "testImplementation"("org.testcontainers:testcontainers-mysql")
     }
 }

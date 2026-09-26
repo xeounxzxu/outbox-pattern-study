@@ -1,0 +1,119 @@
+{
+  "run": "20260926T024802Z",
+  "topic": "outbox.tc.20260926t024802z",
+  "results": [
+    {
+      "id": "TC-L01",
+      "status": "PASS",
+      "expected": "Both apps healthy, migrations applied, API owns lock",
+      "actual": {
+        "apiHealth": [
+          200,
+          {
+            "groups": [
+              "liveness",
+              "readiness"
+            ],
+            "status": "UP"
+          }
+        ],
+        "workerHealth": [
+          200,
+          {
+            "groups": [
+              "liveness",
+              "readiness"
+            ],
+            "status": "UP"
+          }
+        ],
+        "mysql": "8.4.11\t+00:00",
+        "owner": "tc-api-20260926T024802Z",
+        "migrations": "1\toutbox\t1\n2\torders\t1"
+      }
+    },
+    {
+      "id": "TC-L02",
+      "status": "PASS",
+      "expected": "HTTP 201, order + event persisted, processed set",
+      "actual": {
+        "response": {
+          "orderId": "73c2a572-13d6-47af-be65-70e96fec1f19",
+          "productName": "20260926T024802Z-정상-주문",
+          "quantity": 2
+        },
+        "row": "1\t73c2a572-13d6-47af-be65-70e96fec1f19\tPROCESSED\t20260926T024802Z-??-??\t2"
+      }
+    },
+    {
+      "id": "TC-L03",
+      "status": "PASS",
+      "expected": "Invalid input returns 400 and saves no records",
+      "actual": {
+        "http": 400,
+        "before": "1\t1",
+        "after": "1\t1"
+      }
+    },
+    {
+      "id": "TC-L04",
+      "status": "PASS",
+      "expected": "Kafka unavailable: HTTP 201 and pending retained beyond 10s delivery timeout",
+      "actual": {
+        "response": {
+          "orderId": "2749ad15-9315-47df-9e24-7afd60fd5d6a",
+          "productName": "20260926T024802Z-장애-복구",
+          "quantity": 2
+        },
+        "samples": 11,
+        "row": "2\t2749ad15-9315-47df-9e24-7afd60fd5d6a\tPENDING\t20260926T024802Z-??-??\t2"
+      }
+    },
+    {
+      "id": "TC-L05",
+      "status": "PASS",
+      "expected": "After API SIGKILL worker takes lock and pending data survives",
+      "actual": {
+        "owner": "tc-worker-20260926T024802Z",
+        "takeoverSeconds": 4.81,
+        "row": "2\t2749ad15-9315-47df-9e24-7afd60fd5d6a\tPENDING\t20260926T024802Z-??-??\t2"
+      }
+    },
+    {
+      "id": "TC-L06",
+      "status": "PASS",
+      "expected": "Kafka recovery causes worker to publish pending event",
+      "actual": {
+        "owner": "tc-worker-20260926T024802Z",
+        "row": "2\t2749ad15-9315-47df-9e24-7afd60fd5d6a\tPROCESSED\t20260926T024802Z-??-??\t2"
+      }
+    },
+    {
+      "id": "TC-L07",
+      "status": "PASS",
+      "expected": "Restarted API saves orders; current worker retains lock and publishes",
+      "actual": {
+        "owner": "tc-worker-20260926T024802Z",
+        "response": {
+          "orderId": "4056b97a-467e-472c-a8db-5fe1a3aa9a6b",
+          "productName": "20260926T024802Z-재시작-주문",
+          "quantity": 2
+        },
+        "row": "3\t4056b97a-467e-472c-a8db-5fe1a3aa9a6b\tPROCESSED\t20260926T024802Z-???-??\t2"
+      }
+    },
+    {
+      "id": "TC-L08",
+      "status": "PASS",
+      "expected": "Real Kafka consumer receives all 3 order IDs and source/sequence/type headers",
+      "actual": {
+        "orders": [
+          "73c2a572-13d6-47af-be65-70e96fec1f19",
+          "2749ad15-9315-47df-9e24-7afd60fd5d6a",
+          "4056b97a-467e-472c-a8db-5fe1a3aa9a6b"
+        ],
+        "messages": "event-type:OrderCreated,content-type:application/json,x-sequence:\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001,x-source:outbox-pattern\t73c2a572-13d6-47af-be65-70e96fec1f19\t{\"orderId\":\"73c2a572-13d6-47af-be65-70e96fec1f19\",\"productName\":\"20260926T024802Z-정상-주문\",\"quantity\":2}\nevent-type:OrderCreated,content-type:application/json,x-sequence:\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0002,x-source:outbox-pattern\t2749ad15-9315-47df-9e24-7afd60fd5d6a\t{\"orderId\":\"2749ad15-9315-47df-9e24-7afd60fd5d6a\",\"productName\":\"20260926T024802Z-장애-복구\",\"quantity\":2}\nevent-type:OrderCreated,content-type:application/json,x-sequence:\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0003,x-source:outbox-pattern\t4056b97a-467e-472c-a8db-5fe1a3aa9a6b\t{\"orderId\":\"4056b97a-467e-472c-a8db-5fe1a3aa9a6b\",\"productName\":\"20260926T024802Z-재시작-주문\",\"quantity\":2}"
+      }
+    }
+  ]
+}

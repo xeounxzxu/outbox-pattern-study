@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.jdbc.core.JdbcTemplate
-import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.mysql.MySQLContainer
 import org.testcontainers.kafka.KafkaContainer
 import java.net.URI
 import java.net.http.HttpClient
@@ -27,25 +26,24 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class WorkerApplicationTests {
-    private class Postgres : GenericContainer<Postgres>("postgres:17-alpine")
 
     @Test
     fun `API publishes and worker takes over pending events after Kafka outage`() {
-        Postgres().apply {
-            withEnv("POSTGRES_DB", "outbox")
-            withEnv("POSTGRES_USER", "outbox")
-            withEnv("POSTGRES_PASSWORD", "outbox")
-            withExposedPorts(5432)
-            waitingFor(Wait.forLogMessage(".*database system is ready to accept connections.*\n", 2))
+        MySQLContainer("mysql:8.4").apply {
+            withDatabaseName("outbox")
+            withUsername("outbox")
+            withPassword("outbox")
+            withUrlParam("connectionTimeZone", "UTC")
+            withUrlParam("forceConnectionTimeZoneToSession", "true")
             start()
-        }.use { postgres ->
+        }.use { mysql ->
             KafkaContainer("apache/kafka:4.1.1").apply { start() }.use { kafka ->
                 AdminClient.create(mapOf("bootstrap.servers" to kafka.bootstrapServers)).use {
                     it.createTopics(listOf(NewTopic("orders.created", 1, 1.toShort())))
                         .all().get(30, TimeUnit.SECONDS)
                 }
                 val common = arrayOf(
-                    "--spring.datasource.url=jdbc:postgresql://${postgres.host}:${postgres.getMappedPort(5432)}/outbox",
+                    "--spring.datasource.url=${mysql.jdbcUrl}",
                     "--spring.datasource.username=outbox", "--spring.datasource.password=outbox",
                     "--spring.config.import=classpath:outbox.yml",
                     "--outbox.producer[bootstrap.servers]=${kafka.bootstrapServers}",

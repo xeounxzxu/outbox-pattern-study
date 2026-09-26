@@ -1,0 +1,826 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-26T02:48:04.566Z  INFO 44432 --- [outbox-api] [           main] c.example.outbox.api.ApiApplicationKt    : Starting ApiApplicationKt v0.0.1-SNAPSHOT using Java 25 with PID 44432 (/Users/jeoung-gyu/Workspace/outbox-pattern/app/api/build/libs/api-0.0.1-SNAPSHOT.jar started by jeoung-gyu in /Users/jeoung-gyu/Workspace/outbox-pattern)
+2026-09-26T02:48:04.570Z  INFO 44432 --- [outbox-api] [           main] c.example.outbox.api.ApiApplicationKt    : No active profile set, falling back to 1 default profile: "default"
+2026-09-26T02:48:05.643Z  INFO 44432 --- [outbox-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-09-26T02:48:05.653Z  INFO 44432 --- [outbox-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-26T02:48:05.653Z  INFO 44432 --- [outbox-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-09-26T02:48:05.671Z  INFO 44432 --- [outbox-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1053 ms
+2026-09-26T02:48:05.892Z  INFO 44432 --- [outbox-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-26T02:48:06.109Z  INFO 44432 --- [outbox-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3a80c534
+2026-09-26T02:48:06.110Z  INFO 44432 --- [outbox-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-26T02:48:06.131Z  INFO 44432 --- [outbox-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/outbox?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true (MySQL 8.4)
+2026-09-26T02:48:06.219Z  INFO 44432 --- [outbox-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.024s)
+2026-09-26T02:48:06.235Z  INFO 44432 --- [outbox-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `outbox`: 2
+2026-09-26T02:48:06.238Z  INFO 44432 --- [outbox-api] [           main] o.f.core.internal.command.DbMigrate      : Schema `outbox` is up to date. No migration necessary.
+2026-09-26T02:48:06.357Z  INFO 44432 --- [outbox-api] [           main] o.t.t.service.OutboxProcessor            : Starting outbox processor with lockOwnerId tc-api-20260926T024802Z, source outbox-pattern and processing interval 200 ms and producer factory DefaultKafkaProducerFactory{producerProps={enable.idempotence=true, value.serializer=class org.apache.kafka.common.serialization.ByteArraySerializer, request.timeout.ms=3000, max.block.ms=3000, acks=all, bootstrap.servers=localhost:9092, delivery.timeout.ms=10000, key.serializer=class org.apache.kafka.common.serialization.StringSerializer}}
+2026-09-26T02:48:06.378Z  INFO 44432 --- [outbox-api] [           main] o.a.kafka.common.config.AbstractConfig   : ProducerConfig values: 
+	acks = -1
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	config.providers = []
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 10000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 5
+	max.block.ms = 3000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 3000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = []
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = []
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transaction.two.phase.commit.enable = false
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-09-26T02:48:06.394Z  INFO 44432 --- [outbox-api] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-09-26T02:48:06.456Z  INFO 44432 --- [outbox-api] [           main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Instantiated an idempotent producer.
+2026-09-26T02:48:06.482Z  INFO 44432 --- [outbox-api] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.2.1
+2026-09-26T02:48:06.482Z  INFO 44432 --- [outbox-api] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 92f61c44867f39dc
+2026-09-26T02:48:06.482Z  INFO 44432 --- [outbox-api] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1790390886481
+2026-09-26T02:48:06.520Z  INFO 44432 --- [outbox-api] [           main] o.t.t.service.OutboxProcessor            : tc-api-20260926T024802Z acquired outbox lock, starting to process outbox
+2026-09-26T02:48:06.737Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: 5L6g3nShT-eMCtK--X86sw
+2026-09-26T02:48:06.738Z  INFO 44432 --- [outbox-api] [ad | producer-1] o.a.k.c.p.internals.TransactionManager   : [Producer clientId=producer-1] ProducerId set to 1 with epoch 0
+2026-09-26T02:48:06.788Z  INFO 44432 --- [outbox-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-09-26T02:48:06.827Z  INFO 44432 --- [outbox-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-09-26T02:48:06.834Z  INFO 44432 --- [outbox-api] [           main] c.example.outbox.api.ApiApplicationKt    : Started ApiApplicationKt in 2.559 seconds (process running for 2.889)
+2026-09-26T02:48:06.996Z  INFO 44432 --- [outbox-api] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26T02:48:06.996Z  INFO 44432 --- [outbox-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-26T02:48:06.997Z  INFO 44432 --- [outbox-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-09-26T02:48:10.950Z  INFO 44432 --- [outbox-api] [ad | producer-1] o.t.t.service.OutboxProcessor            : Sent record to kafka: OutboxRecord(id=1, created=2026-09-26 02:48:10.904, processed=null, topic=outbox.tc.20260926t024802z, key=73c2a572-13d6-47af-be65-70e96fec1f19, headers={event-type=OrderCreated, content-type=application/json})
+2026-09-26T02:48:11.330Z  WARN 44432 --- [outbox-api] [nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.example.outbox.api.OrderCreated com.example.outbox.api.OrderController.create(com.example.outbox.api.CreateOrderRequest) with 2 errors: [Field error in object 'createOrderRequest' on field 'productName': rejected value []; codes [NotBlank.createOrderRequest.productName,NotBlank.productName,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [createOrderRequest.productName,productName]; arguments []; default message [productName]]; default message [공백일 수 없습니다]] [Field error in object 'createOrderRequest' on field 'quantity': rejected value [0]; codes [Min.createOrderRequest.quantity,Min.quantity,Min.int,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [createOrderRequest.quantity,quantity]; arguments []; default message [quantity],1]; default message [1 이상이어야 합니다]] ]
+2026-09-26T02:48:11.676Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node 1 disconnected.
+2026-09-26T02:48:11.678Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:11.678Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:11.678Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Cancelled in-flight METADATA request with correlation id 7 due to node -1 being disconnected (elapsed time since creation: 1ms, elapsed time since send: 1ms, throttle time: 0ms, request timeout: 3000ms)
+2026-09-26T02:48:11.680Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:11.799Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:11.799Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Cancelled in-flight API_VERSIONS request with correlation id 8 due to node -1 being disconnected (elapsed time since creation: 1ms, elapsed time since send: 1ms, throttle time: 0ms, request timeout: 3000ms)
+2026-09-26T02:48:11.799Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:12.041Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:12.043Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Cancelled in-flight API_VERSIONS request with correlation id 9 due to node -1 being disconnected (elapsed time since creation: 0ms, elapsed time since send: 0ms, throttle time: 0ms, request timeout: 3000ms)
+2026-09-26T02:48:12.043Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:12.476Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:12.476Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Cancelled in-flight API_VERSIONS request with correlation id 10 due to node -1 being disconnected (elapsed time since creation: 1ms, elapsed time since send: 1ms, throttle time: 0ms, request timeout: 3000ms)
+2026-09-26T02:48:12.476Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:13.359Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:13.361Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:13.362Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:14.365Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:14.366Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:14.366Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:15.369Z  INFO 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Node -1 disconnected.
+2026-09-26T02:48:15.371Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:15.372Z  WARN 44432 --- [outbox-api] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:15.633Z  WARN 44432 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : Failed to publish OutboxRecord(id=2, created=2026-09-26 02:48:12.578, processed=null, topic=outbox.tc.20260926t024802z, key=2749ad15-9315-47df-9e24-7afd60fd5d6a, headers={event-type=OrderCreated, content-type=application/json})
+
+org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+
+2026-09-26T02:48:15.639Z  WARN 44432 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : Recreating producer, due to failure while processing outbox.
+
+java.lang.RuntimeException: java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.await(OutboxProcessor.java:262) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[na:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutbox(OutboxProcessor.java:237) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.lambda$tryProcessOutbox$0(OutboxProcessor.java:219) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxLockService.runWithLock(OutboxLockService.java:44) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at one.tomorrow.transactionaloutbox.service.OutboxLockService$$SpringCGLIB$$0.runWithLock(<generated>) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.tryProcessOutbox(OutboxProcessor.java:217) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutboxWithLock(OutboxProcessor.java:203) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+	at org.apache.kafka.clients.producer.KafkaProducer$FutureFailure.<init>(KafkaProducer.java:1532) ~[kafka-clients-4.2.1.jar!/:na]
+	at org.apache.kafka.clients.producer.KafkaProducer.doSend(KafkaProducer.java:1068) ~[kafka-clients-4.2.1.jar!/:na]
+	at org.apache.kafka.clients.producer.KafkaProducer.send(KafkaProducer.java:951) ~[kafka-clients-4.2.1.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.process(OutboxProcessor.java:252) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214) ~[na:na]
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:635) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(AbstractPipeline.java:291) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:652) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:658) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toList(ReferencePipeline.java:663) ~[na:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutbox(OutboxProcessor.java:236) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	... 21 common frames omitted
+Caused by: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+
+2026-09-26T02:48:15.640Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 9223372036854775807 ms.
+2026-09-26T02:48:15.645Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-09-26T02:48:15.646Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-09-26T02:48:15.646Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-09-26T02:48:15.646Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-09-26T02:48:15.647Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.producer for producer-1 unregistered
+2026-09-26T02:48:15.648Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.config.AbstractConfig   : ProducerConfig values: 
+	acks = -1
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-2
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	config.providers = []
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 10000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 5
+	max.block.ms = 3000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 3000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = []
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = []
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transaction.two.phase.commit.enable = false
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-09-26T02:48:15.648Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-09-26T02:48:15.648Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-2] Instantiated an idempotent producer.
+2026-09-26T02:48:15.651Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.2.1
+2026-09-26T02:48:15.652Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 92f61c44867f39dc
+2026-09-26T02:48:15.652Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1790390895651
+2026-09-26T02:48:15.653Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:15.653Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:15.653Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:15.756Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:15.756Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:15.756Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:15.859Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:15.860Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:15.860Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:15.962Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:15.963Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:16.014Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:16.067Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:16.067Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:16.067Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:16.428Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:16.523Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:16.577Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:16.580Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:16.580Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:17.306Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:17.306Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:17.306Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:17.408Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.501Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.554Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.605Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.662Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.715Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.767Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.820Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.873Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.930Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:17.984Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:18.037Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:18.088Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:18.139Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:18.192Z  INFO 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Node -1 disconnected.
+2026-09-26T02:48:18.195Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:18.195Z  WARN 44432 --- [outbox-api] [ad | producer-2] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-2] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:18.878Z  WARN 44432 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : Failed to publish OutboxRecord(id=2, created=2026-09-26 02:48:12.578, processed=null, topic=outbox.tc.20260926t024802z, key=2749ad15-9315-47df-9e24-7afd60fd5d6a, headers={event-type=OrderCreated, content-type=application/json})
+
+org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+
+2026-09-26T02:48:18.879Z  WARN 44432 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : Recreating producer, due to failure while processing outbox.
+
+java.lang.RuntimeException: java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.await(OutboxProcessor.java:262) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[na:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutbox(OutboxProcessor.java:237) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.lambda$tryProcessOutbox$0(OutboxProcessor.java:219) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxLockService.runWithLock(OutboxLockService.java:44) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at one.tomorrow.transactionaloutbox.service.OutboxLockService$$SpringCGLIB$$0.runWithLock(<generated>) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.tryProcessOutbox(OutboxProcessor.java:217) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutboxWithLock(OutboxProcessor.java:203) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.tryLockAcquisition(OutboxProcessor.java:184) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutboxWithLock(OutboxProcessor.java:199) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+	at org.apache.kafka.clients.producer.KafkaProducer$FutureFailure.<init>(KafkaProducer.java:1532) ~[kafka-clients-4.2.1.jar!/:na]
+	at org.apache.kafka.clients.producer.KafkaProducer.doSend(KafkaProducer.java:1068) ~[kafka-clients-4.2.1.jar!/:na]
+	at org.apache.kafka.clients.producer.KafkaProducer.send(KafkaProducer.java:951) ~[kafka-clients-4.2.1.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.process(OutboxProcessor.java:252) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214) ~[na:na]
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:635) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(AbstractPipeline.java:291) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:652) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:658) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toList(ReferencePipeline.java:663) ~[na:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutbox(OutboxProcessor.java:236) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	... 23 common frames omitted
+Caused by: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+
+2026-09-26T02:48:18.879Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-2] Closing the Kafka producer with timeoutMillis = 9223372036854775807 ms.
+2026-09-26T02:48:18.883Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-09-26T02:48:18.883Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-09-26T02:48:18.883Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-09-26T02:48:18.883Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-09-26T02:48:18.884Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.producer for producer-2 unregistered
+2026-09-26T02:48:18.884Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.config.AbstractConfig   : ProducerConfig values: 
+	acks = -1
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-3
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	config.providers = []
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 10000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 5
+	max.block.ms = 3000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 3000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = []
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = []
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transaction.two.phase.commit.enable = false
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-09-26T02:48:18.885Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-09-26T02:48:18.885Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-3] Instantiated an idempotent producer.
+2026-09-26T02:48:18.888Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.2.1
+2026-09-26T02:48:18.888Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 92f61c44867f39dc
+2026-09-26T02:48:18.888Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1790390898888
+2026-09-26T02:48:18.889Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:18.889Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:18.890Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:18.992Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:18.992Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:18.992Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:19.107Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:19.107Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:19.107Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:19.315Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:19.315Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:19.316Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:19.558Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:19.610Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:19.661Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:19.714Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:19.767Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:19.767Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:19.767Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:20.464Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:20.515Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:20.569Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:20.569Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:20.569Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:21.412Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Node -1 disconnected.
+2026-09-26T02:48:21.412Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:21.413Z  WARN 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-3] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:21.572Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.625Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.676Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.733Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.785Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.842Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.892Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.944Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:21.996Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.048Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.101Z  INFO 44432 --- [outbox-api] [ad | producer-3] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-3] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.107Z  WARN 44432 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : Failed to publish OutboxRecord(id=2, created=2026-09-26 02:48:12.578, processed=null, topic=outbox.tc.20260926t024802z, key=2749ad15-9315-47df-9e24-7afd60fd5d6a, headers={event-type=OrderCreated, content-type=application/json})
+
+org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+
+2026-09-26T02:48:22.108Z  WARN 44432 --- [outbox-api] [pool-2-thread-1] o.t.t.service.OutboxProcessor            : Recreating producer, due to failure while processing outbox.
+
+java.lang.RuntimeException: java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.await(OutboxProcessor.java:262) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[na:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutbox(OutboxProcessor.java:237) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.lambda$tryProcessOutbox$0(OutboxProcessor.java:219) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxLockService.runWithLock(OutboxLockService.java:44) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar!/:7.0.9]
+	at one.tomorrow.transactionaloutbox.service.OutboxLockService$$SpringCGLIB$$0.runWithLock(<generated>) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.tryProcessOutbox(OutboxProcessor.java:217) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutboxWithLock(OutboxProcessor.java:203) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.tryLockAcquisition(OutboxProcessor.java:184) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutboxWithLock(OutboxProcessor.java:199) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:309) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+	at org.apache.kafka.clients.producer.KafkaProducer$FutureFailure.<init>(KafkaProducer.java:1532) ~[kafka-clients-4.2.1.jar!/:na]
+	at org.apache.kafka.clients.producer.KafkaProducer.doSend(KafkaProducer.java:1068) ~[kafka-clients-4.2.1.jar!/:na]
+	at org.apache.kafka.clients.producer.KafkaProducer.send(KafkaProducer.java:951) ~[kafka-clients-4.2.1.jar!/:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.process(OutboxProcessor.java:252) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214) ~[na:na]
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:635) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(AbstractPipeline.java:291) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:652) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:658) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toList(ReferencePipeline.java:663) ~[na:na]
+	at one.tomorrow.transactionaloutbox.service.OutboxProcessor.processOutbox(OutboxProcessor.java:236) ~[outbox-kafka-spring-4.0.1-SNAPSHOT.jar!/:na]
+	... 23 common frames omitted
+Caused by: org.apache.kafka.common.errors.TimeoutException: Topic outbox.tc.20260926t024802z not present in metadata after 3000 ms.
+
+2026-09-26T02:48:22.108Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-3] Closing the Kafka producer with timeoutMillis = 9223372036854775807 ms.
+2026-09-26T02:48:22.111Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-09-26T02:48:22.111Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-09-26T02:48:22.111Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-09-26T02:48:22.111Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-09-26T02:48:22.111Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.producer for producer-3 unregistered
+2026-09-26T02:48:22.112Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.config.AbstractConfig   : ProducerConfig values: 
+	acks = -1
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-4
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	config.providers = []
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 10000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 5
+	max.block.ms = 3000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 3000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = []
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = []
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transaction.two.phase.commit.enable = false
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-09-26T02:48:22.112Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-09-26T02:48:22.112Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-4] Instantiated an idempotent producer.
+2026-09-26T02:48:22.115Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.2.1
+2026-09-26T02:48:22.115Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 92f61c44867f39dc
+2026-09-26T02:48:22.115Z  INFO 44432 --- [outbox-api] [pool-2-thread-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1790390902115
+2026-09-26T02:48:22.116Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:22.116Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:22.116Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:22.218Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:22.218Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:22.218Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:22.321Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:22.321Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:22.321Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:22.423Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.424Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.476Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.529Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:22.530Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:22.530Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:22.860Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:22.964Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:23.017Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:23.017Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:23.017Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:23.764Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:23.818Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:23.818Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:23.819Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected
+2026-09-26T02:48:23.920Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:23.972Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.025Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.076Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.131Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.183Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.235Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.288Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.339Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.391Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.444Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.496Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.549Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.601Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-4] Rebootstrapping with [localhost/127.0.0.1:9092]
+2026-09-26T02:48:24.654Z  INFO 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Node -1 disconnected.
+2026-09-26T02:48:24.654Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+2026-09-26T02:48:24.654Z  WARN 44432 --- [outbox-api] [ad | producer-4] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-4] Bootstrap broker localhost:9092 (id: -1 rack: null isFenced: false) disconnected

@@ -2,7 +2,7 @@
 
 Spring Boot 4.1.1, Kotlin 2.3.21, JDK 25 LTS 기반 멀티 모듈 예제입니다.
 [tomorrow-one/transactional-outbox](https://github.com/tomorrow-one/transactional-outbox)의
-`outbox-kafka-spring:4.0.0`을 사용합니다.
+로컬 MySQL 지원 버전 `outbox-kafka-spring:4.0.1-SNAPSHOT`을 사용합니다.
 
 ## 모듈과 동작
 
@@ -15,7 +15,7 @@ Spring Boot 4.1.1, Kotlin 2.3.21, JDK 25 LTS 기반 멀티 모듈 예제입니�
 ```mermaid
 flowchart LR
     Request[주문 요청] --> API
-    API -->|하나의 DB 트랜잭션| DB[(PostgreSQL: orders + outbox_kafka)]
+    API -->|하나의 DB 트랜잭션| DB[(MySQL 8.4: orders + outbox_kafka)]
     APIProcessor[API OutboxProcessor] -->|DB 락 획득| DB
     Worker[Worker OutboxProcessor] -->|DB 락 획득| DB
     APIProcessor --> Kafka
@@ -40,7 +40,20 @@ flowchart LR
 
 ## 로컬 실행
 
-Docker와 JDK 25가 필요합니다. 개발용 PostgreSQL과 Kafka는 localhost에만 노출됩니다.
+먼저 MySQL 지원 라이브러리를 Maven Local에 설치합니다. `commons`도 함께 필요합니다.
+
+```sh
+cd /Users/jeoung-gyu/Workspace/opensource/jk-transactional-outbox
+./gradlew :commons:publishToMavenLocal :outbox-kafka-spring:publishToMavenLocal
+cd /Users/jeoung-gyu/Workspace/outbox-pattern
+```
+
+Maven Local 조회는 `one.tomorrow.transactional-outbox` 그룹에만 적용됩니다.
+Flyway는 `db/mysql`의 MySQL 전용 스키마를 사용합니다. 기존 PostgreSQL 마이그레이션과
+Docker 볼륨은 삭제하지 않으며 기존 데이터의 자동 이전은 수행하지 않습니다.
+새 MySQL 볼륨에서 시작합니다. `bootRun`과 테스트 JVM은 UTC로 설정됩니다.
+
+Docker와 JDK 25가 필요합니다. 개발용 MySQL 8.4과 Kafka는 localhost에만 노출됩니다.
 
 ```sh
 # macOS
@@ -48,7 +61,7 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 25)
 export PATH="$JAVA_HOME/bin:$PATH"
 
 docker compose up -d
-# kafka-init이 성공(exit 0)했고 postgres/kafka가 healthy인지 확인
+# kafka-init이 성공(exit 0)했고 mysql/kafka가 healthy인지 확인
 docker compose ps -a
 ```
 
@@ -75,10 +88,10 @@ docker compose exec kafka /opt/kafka/bin/kafka-console-consumer.sh \
 주문·미처리 이벤트·락 소유자는 다음으로 확인합니다.
 
 ```sh
-docker compose exec postgres psql -U outbox -d outbox \
-  -c 'select id, topic, key, created, processed from outbox_kafka order by id;'
-docker compose exec postgres psql -U outbox -d outbox \
-  -c 'select * from outbox_kafka_lock;'
+docker compose exec mysql mysql -uoutbox -poutbox outbox \
+  -e 'select id, topic, `key`, created, processed from outbox_kafka order by id;'
+docker compose exec mysql mysql -uoutbox -poutbox outbox \
+  -e 'select * from outbox_kafka_lock;'
 ```
 
 ## 장애 인계 확인
@@ -98,7 +111,7 @@ docker compose exec postgres psql -U outbox -d outbox \
 | 환경 변수 | 기본값 | 설명 |
 | --- | --- | --- |
 | API_PORT / WORKER_PORT | 8080 / 8081 | HTTP 포트 |
-| DB_URL | jdbc:postgresql://localhost:5432/outbox | 두 앱이 공유하는 PostgreSQL |
+| DB_URL | jdbc:mysql://localhost:3306/outbox?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true | 두 앱이 공유하는 MySQL 8.4 |
 | DB_USERNAME / DB_PASSWORD | outbox / outbox | 로컬 개발 DB 계정 |
 | KAFKA_BOOTSTRAP_SERVERS | localhost:9092 | Kafka 브로커 |
 | ORDERS_TOPIC | orders.created | API가 저장할 이벤트 토픽 (사전 생성 필요) |
@@ -117,7 +130,7 @@ Kafka TLS/SASL 등 추가 설정은 `outbox.producer` 맵으로 전달할 수 �
 ./gradlew clean build
 ```
 
-테스트는 실행 중인 Docker를 요구하며 Testcontainers로 격리된 PostgreSQL·Kafka를 만듭니다.
+테스트는 실행 중인 Docker를 요구하며 Testcontainers로 격리된 MySQL 8.4·Kafka를 만듭니다.
 Docker가 없으면 통합 테스트는 실패하며 자동으로 건너뛰지 않습니다.
 
 - API: HTTP 주문 생성과 이벤트 저장, 업무 트랜잭션 롤백, 입력 검증
@@ -125,10 +138,10 @@ Docker가 없으면 통합 테스트는 실패하며 자동으로 건너뛰지 �
   API 종료 후 Worker의 락 인계와 실제 메시지 수신
 
 ```sh
-java -jar app/api/build/libs/api-0.0.1-SNAPSHOT.jar
-java -jar app/worker/build/libs/worker-0.0.1-SNAPSHOT.jar
+java -Duser.timezone=UTC -jar app/api/build/libs/api-0.0.1-SNAPSHOT.jar
+java -Duser.timezone=UTC -jar app/worker/build/libs/worker-0.0.1-SNAPSHOT.jar
 ```
 
-Spring Framework 7 / Boot 4 계열용 라이브러리 4.0.0을 사용합니다.
+Spring Framework 7 / Boot 4 계열용 라이브러리 4.0.1-SNAPSHOT을 사용합니다.
 상위 라이브러리의 호환표는 Boot 4.0.x를 명시하므로 현재 Boot 4.1.1 조합은
 프로젝트 통합 테스트로 별도 검증합니다.

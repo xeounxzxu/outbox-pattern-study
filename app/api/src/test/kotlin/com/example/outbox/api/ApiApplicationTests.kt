@@ -9,8 +9,7 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
-import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.mysql.MySQLContainer
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -25,20 +24,19 @@ import kotlin.test.assertTrue
 )
 class ApiApplicationTests {
     companion object {
-        class Postgres : GenericContainer<Postgres>("postgres:17-alpine")
-        private val postgres = Postgres().apply {
-            withEnv("POSTGRES_DB", "outbox")
-            withEnv("POSTGRES_USER", "outbox")
-            withEnv("POSTGRES_PASSWORD", "outbox")
-            withExposedPorts(5432)
-            waitingFor(Wait.forLogMessage(".*database system is ready to accept connections.*\n", 2))
+        private val mysql = MySQLContainer("mysql:8.4").apply {
+            withDatabaseName("outbox")
+            withUsername("outbox")
+            withPassword("outbox")
+            withUrlParam("connectionTimeZone", "UTC")
+            withUrlParam("forceConnectionTimeZoneToSession", "true")
             start()
         }
 
         @JvmStatic
         @DynamicPropertySource
         fun database(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url") { "jdbc:postgresql://${postgres.host}:${postgres.getMappedPort(5432)}/outbox" }
+            registry.add("spring.datasource.url") { "${mysql.jdbcUrl}" }
             registry.add("spring.datasource.username") { "outbox" }
             registry.add("spring.datasource.password") { "outbox" }
         }
@@ -58,7 +56,7 @@ class ApiApplicationTests {
         assertTrue(response.body().contains("orderId"))
         assertEquals(before + 1, count("outbox_kafka"))
         assertEquals(1, jdbc.queryForObject(
-            "select count(*) from outbox_kafka o join orders b on o.key = b.id::text where o.processed is null and b.product_name = ?",
+            "select count(*) from outbox_kafka o join orders b on o.`key` = b.id where o.processed is null and b.product_name = ?",
             Int::class.java, "Kotlin book",
         ))
     }
