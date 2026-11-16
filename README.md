@@ -2,7 +2,7 @@
 
 Spring Boot 4.1.1, Kotlin 2.3.21, JDK 25 LTS 기반 멀티 모듈 예제입니다.
 [tomorrow-one/transactional-outbox](https://github.com/tomorrow-one/transactional-outbox)의
-로컬 MySQL 지원 버전 `outbox-kafka-spring:4.0.1-SNAPSHOT`을 사용합니다.
+공식 릴리스 [`outbox-kafka-spring:4.1.0`](https://github.com/tomorrow-one/transactional-outbox/releases/tag/outbox-kafka-4.1)을 사용합니다.
 
 ## 모듈과 동작
 
@@ -40,15 +40,7 @@ flowchart LR
 
 ## 로컬 실행
 
-먼저 MySQL 지원 라이브러리를 Maven Local에 설치합니다. `commons`도 함께 필요합니다.
-
-```sh
-cd /Users/jeoung-gyu/Workspace/opensource/jk-transactional-outbox
-./gradlew :commons:publishToMavenLocal :outbox-kafka-spring:publishToMavenLocal
-cd /Users/jeoung-gyu/Workspace/outbox-pattern
-```
-
-Maven Local 조회는 `one.tomorrow.transactional-outbox` 그룹에만 적용됩니다.
+라이브러리는 Maven Central에서 받으며 로컬 빌드·설치가 필요하지 않습니다.
 Flyway는 `db/mysql`의 MySQL 전용 스키마를 사용합니다. 기존 PostgreSQL 마이그레이션과
 Docker 볼륨은 삭제하지 않으며 기존 데이터의 자동 이전은 수행하지 않습니다.
 새 MySQL 볼륨에서 시작합니다. `bootRun`과 테스트 JVM은 UTC로 설정됩니다.
@@ -142,6 +134,6 @@ java -Duser.timezone=UTC -jar app/api/build/libs/api-0.0.1-SNAPSHOT.jar
 java -Duser.timezone=UTC -jar app/worker/build/libs/worker-0.0.1-SNAPSHOT.jar
 ```
 
-Spring Framework 7 / Boot 4 계열용 라이브러리 4.0.1-SNAPSHOT을 사용합니다.
+Spring Framework 7 / Boot 4 계열용 라이브러리 4.1.0을 사용합니다.
 상위 라이브러리의 호환표는 Boot 4.0.x를 명시하므로 현재 Boot 4.1.1 조합은
 프로젝트 통합 테스트로 별도 검증합니다.

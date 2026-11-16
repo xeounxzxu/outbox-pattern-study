@@ -17,9 +17,6 @@ configure(listOf(project(":app:api"), project(":app:worker"), project(":infra:ou
     group = "com.example.outbox"
     version = "0.0.1-SNAPSHOT"
     repositories {
-        mavenLocal {
-            content { includeGroup("one.tomorrow.transactional-outbox") }
-        }
         mavenCentral()
     }
 

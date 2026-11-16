@@ -1,7 +1,7 @@
 plugins { `java-library` }
 
 dependencies {
-    api("one.tomorrow.transactional-outbox:outbox-kafka-spring:4.0.1-SNAPSHOT") {
+    api("one.tomorrow.transactional-outbox:outbox-kafka-spring:4.1.0") {
         exclude(group = "org.postgresql", module = "postgresql")
     }
     api("org.springframework.boot:spring-boot-starter-jdbc")
